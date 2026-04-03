@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinterest India</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--red:#E60023;--red-dark:#AD081B;--g50:#F9FAFB;--g100:#F3F4F6;--g200:#E5E7EB;--g400:#9CA3AF;--g600:#4B5563;--g900:#111827;--w:#fff;--r:24px;--sh:0 4px 24px rgba(0,0,0,.08);--shl:0 8px 40px rgba(0,0,0,.14)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#E0E0E0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.phone{width:428px;height:926px;background:var(--w);border-radius:48px;overflow:hidden;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.28);display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+.screen.active{display:flex}
+.sa{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.sa::-webkit-scrollbar{display:none}
+.hdr{padding:14px 20px;display:flex;align-items:center;gap:12px;background:var(--w);border-bottom:1px solid var(--g100);flex-shrink:0;z-index:10}
+.htitle{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;flex:1;color:var(--g900)}
+.ib{width:36px;height:36px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .15s;color:var(--g600)}
+.ib:hover{background:var(--g100)}
+.ib svg{width:20px;height:20px}
+.bnav{display:flex;border-top:1px solid var(--g200);background:var(--w);flex-shrink:0;padding:8px 0 4px}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;border:none;background:none;color:#767676;font-size:10px;font-family:'DM Sans',sans-serif;transition:color .15s}
+.ni.active{color:var(--red)}
+.ni svg{width:22px;height:22px}
+
+/* S1 HOME */
+.hh{padding:12px 16px;display:flex;align-items:center;gap:10px;background:var(--w);border-bottom:1px solid var(--g100);flex-shrink:0}
+.sb{flex:1;display:flex;align-items:center;gap:8px;background:var(--g100);border-radius:24px;padding:10px 16px;cursor:pointer}
+.sb span{font-size:14px;color:var(--g400)}
+.sb svg{width:16px;height:16px;color:var(--g400)}
+.cc{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.cc::-webkit-scrollbar{display:none}
+.chip{padding:7px 16px;border-radius:20px;white-space:nowrap;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .2s}
+.chip.active{background:var(--red);color:var(--w)}
+.chip.inactive{background:#F0F0F0;color:var(--g900)}
+.masonry{padding:8px;columns:2;gap:8px}
+.pc{break-inside:avoid;margin-bottom:8px;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;background:var(--g100);transition:transform .2s}
+.pc:hover{transform:scale(1.01)}
+.pc img{width:100%;display:block;object-fit:cover}
+.po{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%);padding:24px 10px 10px;opacity:0;transition:opacity .2s}
+.pc:hover .po{opacity:1}
+.pot{color:#fff;font-size:12px;font-weight:600}
+.pop{color:rgba(255,255,255,.85);font-size:11px}
+.svb{position:absolute;top:8px;right:8px;background:var(--red);color:#fff;border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;opacity:0;transition:opacity .2s}
+.pc:hover .svb{opacity:1}
+.pi{padding:8px 10px}
+.pit{font-size:12px;font-weight:600;color:var(--g900)}
+.pip{font-size:11px;color:var(--g600);margin-top:2px}
+
+/* S2 DETAIL */
+.hi{width:100%;height:420px;object-fit:cover;display:block}
+.hsb{position:absolute;bottom:16px;right:16px;background:var(--red);color:#fff;border:none;border-radius:24px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shl)}
+.pt{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--g900)}
+.ps{font-size:13px;color:var(--g400);margin-top:4px}
+.pp{font-size:20px;font-weight:700;color:var(--red);margin-top:10px}
+.ctab{width:100%;padding:16px;background:var(--red);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;transition:background .2s}
+.ctab:hover{background:var(--red-dark)}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:0 20px;margin:16px 0 12px}
+.st{font-size:16px;font-weight:700;color:var(--g900)}
+.va{font-size:13px;color:var(--red);font-weight:600;cursor:pointer}
+.cw{padding:0 20px;display:flex;gap:12px;overflow-x:auto;scrollbar-width:none}
+.cw::-webkit-scrollbar{display:none}
+.sc{min-width:150px;border-radius:16px;overflow:hidden;border:1px solid var(--g200);flex-shrink:0}
+.sc img{width:100%;height:100px;object-fit:cover}
+.sci{padding:8px 10px}
+.scn{font-size:12px;font-weight:600;color:var(--g900)}
+.scp{font-size:12px;color:var(--red);font-weight:700}
+.scs{display:flex;align-items:center;gap:6px;margin-top:4px}
+.av{width:18px;height:18px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700}
+.tw{padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap}
+.tag{background:var(--g100);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--g600)}
+
+/* S3 OUTFIT */
+.ib2{margin:16px;padding:14px 16px;background:#FFF0F5;border-radius:16px;font-size:13px;color:var(--g600);line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.oc{margin:0 16px 12px;border-radius:20px;border:1px solid var(--g200);overflow:hidden;display:flex;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.oci{width:110px;height:110px;object-fit:cover;flex-shrink:0}
+.ocb{padding:12px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.ocat{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--g400);font-weight:600}
+.on{font-size:14px;font-weight:700;color:var(--g900);margin-top:4px;line-height:1.3}
+.op{font-size:15px;font-weight:700;color:var(--red);margin-top:4px}
+.swb{display:flex;align-items:center;gap:6px;background:var(--g100);border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:var(--g600);align-self:flex-start;margin-top:8px;transition:all .2s}
+.swb:hover{background:#FFE5EA;color:var(--red)}
+.swb svg{width:13px;height:13px}
+.fab{position:absolute;bottom:112px;right:20px;background:var(--red);color:#fff;border:none;border-radius:30px;padding:14px 20px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(230,0,35,.4);z-index:20;transition:transform .2s}
+.fab:hover{transform:scale(1.04)}
+.of{position:absolute;bottom:60px;left:0;right:0;background:#fff;border-top:1px solid var(--g200);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -4px 16px rgba(0,0,0,.06);z-index:10}
+.otl{font-size:12px;color:var(--g400)}
+.otp{font-size:18px;font-weight:800;color:var(--g900)}
+.acb{background:var(--red);color:#fff;border:none;border-radius:20px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px}
+
+/* S4 TRYON */
+.ttop{height:52%;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:var(--g100)}
+
+/* Static placeholder images - before and after */
+.tryon-img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+.tryon-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--g400);position:absolute;inset:0;background:var(--g100)}
+.tryon-placeholder svg{width:48px;height:48px;opacity:.3}
+.tryon-placeholder p{font-size:13px;opacity:.6}
+.tryon-placeholder .ph-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;background:var(--g200);color:var(--g600);padding:4px 10px;border-radius:20px;margin-top:4px}
+
+.aib{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.62);color:#fff;border-radius:20px;padding:6px 12px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;backdrop-filter:blur(8px);z-index:5}
+.pd{width:8px;height:8px;border-radius:50%;background:#22C55E;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.tsw{position:absolute;top:12px;right:12px;background:#fff;border-radius:30px;padding:3px;display:flex;box-shadow:var(--sh);z-index:5}
+.tb{padding:6px 14px;border-radius:24px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.tb.active{background:var(--red);color:#fff}
+.tb.inactive{background:transparent;color:var(--g600)}
+.aov{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.4) 80%,transparent 100%);padding:32px 16px 16px;color:#fff;z-index:4}
+.aot{font-size:13px;line-height:1.65}
+.aol{display:flex;align-items:center;gap:8px;font-size:13px}
+.sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tbot{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.th{aspect-ratio:1;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;border:2px solid var(--g200);transition:all .2s}
+.th.selected{border:3px solid var(--red)}
+.th img{width:100%;height:100%;object-fit:cover}
+.tc{position:absolute;inset:0;background:rgba(230,0,35,.18);display:flex;align-items:center;justify-content:center}
+.tc svg{width:20px;height:20px;color:var(--red)}
+.si{background:var(--g50);border-radius:12px;padding:10px 14px}
+.sin{font-size:14px;font-weight:700;color:var(--g900)}
+.sic{font-size:11px;color:var(--g400);text-transform:uppercase;letter-spacing:.5px}
+.upb{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;flex-shrink:0}
+.upb:hover{background:var(--red-dark)}
+#phinput{display:none}
+
+/* Placeholder info banner */
+.ph-banner{background:#FFF8E1;border:1px dashed #F59E0B;border-radius:12px;padding:10px 14px;font-size:11px;color:#92400E;line-height:1.5;display:flex;gap:8px;align-items:flex-start;flex-shrink:0}
+
+/* S5 LOCAL */
+.lb{margin:12px 16px;background:var(--g50);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--g600)}
+.lb svg{width:16px;height:16px;color:var(--red);flex-shrink:0}
+.fr{padding:0 16px;display:flex;gap:10px;margin-bottom:12px}
+.fb{padding:8px 16px;border-radius:20px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.fb.active{background:var(--red);color:#fff}
+.fb.inactive{background:var(--g100);color:var(--g600)}
+.rc{margin:0 16px 12px;border-radius:20px;border:1px solid var(--g200);padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.rt{display:flex;align-items:center;gap:12px}
+.rl{width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.rn{font-size:16px;font-weight:700;color:var(--g900)}
+.rr{font-size:12px;color:var(--g400)}
+.rp{font-size:22px;font-weight:800;color:var(--g900)}
+.rm{display:flex;gap:16px;font-size:12px;color:var(--g600)}
+.rm span{display:flex;align-items:center;gap:4px}
+.rm svg{width:13px;height:13px;color:var(--g400)}
+.vsb{width:100%;padding:12px;border:1.5px solid var(--red);border-radius:20px;background:transparent;color:var(--red);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.vsb:hover{background:var(--red);color:#fff}
+.fd{padding:12px 20px 20px;font-size:11px;color:var(--g400);text-align:center}
+.toast{position:absolute;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--g900);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:100}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- S1 HOME -->
+<div class="screen active" id="screen-home">
+  <div class="hh">
+    <div class="sb">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>Search fashion, styles...</span>
+    </div>
+    <button class="ib">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    </button>
+  </div>
+  <div class="cc">
+    <button class="chip active" onclick="setChip(this)">All</button>
+    <button class="chip inactive" onclick="setChip(this)">Lehengas</button>
+    <button class="chip inactive" onclick="setChip(this)">Streetwear</button>
+    <button class="chip inactive" onclick="setChip(this)">Accessories</button>
+    <button class="chip inactive" onclick="setChip(this)">Sarees</button>
+    <button class="chip inactive" onclick="setChip(this)">Ethnic Wear</button>
+    <button class="chip inactive" onclick="setChip(this)">Formal</button>
+    <button class="chip inactive" onclick="setChip(this)">Casual</button>
+  </div>
+  <div class="sa"><div class="masonry" id="mg"></div></div>
+  <nav class="bnav">
+    <button class="ni active"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Search</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Create</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Alerts</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></button>
+  </nav>
+</div>
+
+<!-- S2 DETAIL -->
+<div class="screen" id="screen-detail">
+  <div class="hdr">
+    <button class="ib" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <span class="htitle">Pin Detail</span>
+    <button class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+    <button class="ib" id="hrtbtn" data-saved="false" onclick="toggleHeart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+  </div>
+  <div class="sa">
+    <div style="position:relative">
+      <img class="hi" src="lehenga.jpeg" alt="Royal Lehenga">
+      <button class="hsb">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Save
+      </button>
+    </div>
+    <div style="padding:20px">
+      <div class="pt">Royal Lehenga Collection</div>
+      <div class="ps">Traditional Indian Wedding Wear</div>
+      <div class="pp">Starting ₹12,999</div>
+      <button class="ctab" onclick="navigate('outfit')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Make My Outfit
+      </button>
+    </div>
+    <div class="sh"><span class="st">Shop Locally (India)</span><span class="va" onclick="navigate('local')">View All</span></div>
+    <div class="cw">
+      <div class="sc"><img src="lehenga.jpeg" alt=""><div class="sci"><div class="scn">Embroidered Lehenga</div><div class="scp">₹11,999</div><div class="scs"><div class="av">M</div><span style="font-size:10px;color:#767676">Myntra</span></div></div></div>
+      <div class="sc"><img src="silksari.jpeg" alt=""><div class="sci"><div class="scn">Silk Bridal Set</div><div class="scp">₹13,499</div><div class="scs"><div class="av">A</div><span style="font-size:10px;color:#767676">Ajio</span></div></div></div>
+      <div class="sc"><img src="anarkali.jpeg" alt=""><div class="sci"><div class="scn">Designer Anarkali</div><div class="scp">₹9,999</div><div class="scs"><div class="av">F</div><span style="font-size:10px;color:#767676">Flipkart</span></div></div></div>
+      <div class="sc"><img src="zaridupatta.jpg" alt=""><div class="sci"><div class="scn">Zari Work Saree</div><div class="scp">₹7,499</div><div class="scs"><div class="av">N</div><span style="font-size:10px;color:#767676">Nykaa</span></div></div></div>
+    </div>
+    <div style="margin:16px 20px 8px;font-size:14px;color:var(--g600);line-height:1.6">A stunning royal lehenga with intricate zari embroidery and rich silk fabric. Perfect for weddings and grand celebrations.</div>
+    <div class="tw">
+      <span class="tag">#Lehenga</span><span class="tag">#BridalWear</span><span class="tag">#IndianFashion</span><span class="tag">#Wedding</span><span class="tag">#Ethnic</span>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="navigate('home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Search</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Create</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Alerts</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></button>
+  </nav>
+</div>
+
+<!-- S3 OUTFIT -->
+<div class="screen" id="screen-outfit" style="position:relative">
+  <div class="hdr">
+    <button class="ib" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <span class="htitle">Make My Outfit</span>
+  </div>
+  <div class="sa" style="padding-bottom:140px">
+    <div class="ib2"><span style="font-size:20px">✨</span><span>AI has curated a complete outfit for you. Swap any piece to customise your look!</span></div>
+    <div id="oc"></div>
+  </div>
+  <button class="fab" onclick="navigate('tryon')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    Virtual Try-On
+  </button>
+  <div class="of">
+    <div><div class="otl">Total price</div><div class="otp" id="ot">₹31,996</div></div>
+    <button class="acb">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      Add All to Cart
+    </button>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="navigate('home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Search</span></button>
+    <button class="ni active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Create</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Alerts</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></button>
+  </nav>
+</div>
+
+<!-- S4 TRYON -->
+<div class="screen" id="screen-tryon">
+  <div class="hdr">
+    <button class="ib" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <span class="htitle">Virtual Try-On</span>
+    <button class="ib" id="dlbtn" onclick="dlTryOn()" style="opacity:.35;pointer-events:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </button>
+  </div>
+
+  <!-- Image panel: shows BEFORE or AFTER image -->
+  <div class="ttop" id="ttop">
+
+    <!--
+    ═══════════════════════════════════════════════════
+    STATIC IMAGE PLACEHOLDERS — replace src="" with your local image paths
+    
+    BEFORE image: the model/person WITHOUT outfit (original photo)
+      → replace src="" below with e.g. src="before.jpg"
+    
+    AFTER image: the model/person WITH outfit styled on (composited image)
+      → replace src="" below with e.g. src="after_lehenga.jpg"
+    
+    Both images should ideally be the same dimensions/crop.
+    ═══════════════════════════════════════════════════
+    -->
+
+    <!-- BEFORE image (shown when "Before" tab is active) -->
+    <img
+      id="img-before"
+      class="tryon-img"
+      src=""
+      alt="Before try-on"
+      style="display:none"
+      onerror="this.style.display='none'; document.getElementById('ph-before').style.display='flex';"
+    >
+    <!-- Fallback placeholder if before image is missing -->
+    <div class="tryon-placeholder" id="ph-before" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <p>Before photo</p>
+      <span class="ph-label">Set src="before.jpg"</span>
+    </div>
+
+    <!-- AFTER image (shown when "After" tab is active) -->
+    <img
+      id="img-after"
+      class="tryon-img"
+      src=""
+      alt="After try-on"
+      style="display:none"
+      onerror="this.style.display='none'; document.getElementById('ph-after').style.display='flex';"
+    >
+    <!-- Fallback placeholder if after image is missing -->
+    <div class="tryon-placeholder" id="ph-after" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <p>After try-on photo</p>
+      <span class="ph-label">Set src="after.jpg"</span>
+    </div>
+
+    <!-- Default empty state (when neither image src is set) -->
+    <div class="tryon-placeholder" id="ph-default">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <p>Add your images below</p>
+      <span class="ph-label">Before &amp; After</span>
+    </div>
+
+    <!-- AI active badge -->
+    <div class="aib" id="aibadge" style="display:none"><div class="pd"></div>AI Try-On Active</div>
+
+    <!-- Before / After toggle -->
+    <div class="tsw">
+      <button class="tb active" id="btnbefore" onclick="setMode('before')">Before</button>
+      <button class="tb inactive" id="btnafter" onclick="setMode('after')">After</button>
+    </div>
+
+    <!-- AI overlay caption -->
+    <div class="aov" id="aov" style="display:none">
+      <div class="aol" id="aload" style="display:none"><div class="sp"></div><span>AI is styling you... ✨</span></div>
+      <div class="aot" id="artxt"></div>
+    </div>
+  </div>
+
+  <!-- Bottom panel -->
+  <div class="tbot">
+    <!-- Info banner for devs -->
+    <div class="ph-banner" id="ph-devnote">
+      <span style="font-size:16px">📌</span>
+      <span>
+        <strong>Dev note:</strong> Add your before &amp; after images locally.<br>
+        In the HTML, set <code>src="before.jpg"</code> and <code>src="after.jpg"</code> on the two <code>&lt;img&gt;</code> elements inside <code>#ttop</code>.
+      </span>
+    </div>
+
+    <!-- Outfit component thumbnails -->
+    <div class="tg" id="tg"></div>
+
+    <!-- Selected component label -->
+    <div class="si" id="selinfo">
+      <div class="sin">Lehenga Choli</div>
+      <div class="sic">Top</div>
+    </div>
+
+    <input type="file" accept="image/*" id="phinput" onchange="handleUpload(event)">
+  </div>
+
+  <div class="toast" id="tst"></div>
+</div>
+
+<!-- S5 LOCAL -->
+<div class="screen" id="screen-local">
+  <div class="hdr">
+    <button class="ib" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+    <span class="htitle">Shop Locally</span>
+    <button class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
+  </div>
+  <div class="sa">
+    <div class="lb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Available near Mumbai, India</div>
+    <div class="fr">
+      <button class="fb active" id="fp" onclick="setFilter('price')">Price: Low to High</button>
+      <button class="fb inactive" id="fd" onclick="setFilter('delivery')">Fastest Delivery</button>
+    </div>
+    <div class="ib2" style="margin:0 16px 16px"><span style="font-size:18px">💡</span><span>Compare prices across stores. Prices and availability may vary.</span></div>
+    <div id="rl"></div>
+    <div class="fd">Prices are indicative. Pinterest India is not responsible for pricing accuracy.</div>
+  </div>
+  <nav class="bnav">
+    <button class="ni active" onclick="navigate('home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>Search</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span>Create</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Alerts</span></button>
+    <button class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></button>
+  </nav>
+</div>
+
+</div><!-- /phone -->
+
+<script>
+const pins = [
+  {id:1,img:'lehenga.jpeg',title:'Royal Lehenga',price:'₹12,999',h:280},
+  {id:2,img:'kurta.jpeg',title:'Embroidered Kurta',price:'₹4,599',h:220},
+  {id:3,img:'silksari.jpeg',title:'Silk Saree',price:'₹8,999',h:300},
+  {id:4,img:'zaridupatta.jpg',title:'Zari Dupatta',price:'₹2,499',h:200},
+  {id:5,img:'anarkali.jpeg',title:'Anarkali Suit',price:'₹9,999',h:260},
+  {id:6,img:'bridaljwellery.jpg',title:'Bridal Jewelry',price:'₹15,999',h:240},
+  {id:7,img:'designerheels.jpg',title:'Designer Heels',price:'₹3,999',h:200},
+  {id:8,img:'plazzoset.jpg',title:'Palazzo Set',price:'₹6,499',h:270}
+];
+
+const outfitItems = [
+  {id:'top',category:'Top',name:'Embroidered Lehenga Choli',price:12999,img:'lehenga.jpeg',alt:{name:'Silk Kurta Set',price:7499,img:'silkkurti.jpeg'}},
+  {id:'footwear',category:'Footwear',name:'Designer Heels',price:3999,img:'designerheels.jpg',alt:{name:'Embellished Juttis',price:1999,img:'juttis.jpeg'}},
+  {id:'accessories',category:'Accessories',name:'Traditional Jewelry Set',price:8999,img:'bridaljwellery.jpg',alt:{name:'Kundan Earrings',price:2999,img:'kundanearrings.jpeg'}}
+];
+
+const tryOnComps = [
+  {id:'top',name:'Lehenga Choli',category:'Top',img:'lehenga.jpeg'},
+  {id:'footwear',name:'Heels',category:'Footwear',img:'designerheels.jpg'},
+  {id:'accessories',name:'Jewelry',category:'Accessories',img:'bridaljwellery.jpg'},
+  {id:'bottom',name:'Skirt', category:'Bottom',img:'silkskirt.jpeg'}
+  
+];
+
+const retailers = [
+  {name:'Myntra',initials:'M',price:'₹11,999',delivery:'2 days',distance:'3.2 km',rating:'4.5',pn:11999,dn:2},
+  {name:'Ajio',initials:'AJ',price:'₹12,499',delivery:'3 days',distance:'4.1 km',rating:'4.3',pn:12499,dn:3},
+  {name:'Amazon Fashion',initials:'AF',price:'₹11,599',delivery:'1 day',distance:'Online',rating:'4.4',pn:11599,dn:1},
+  {name:'Flipkart',initials:'FK',price:'₹12,999',delivery:'4 days',distance:'Online',rating:'4.1',pn:12999,dn:4},
+  {name:'Nykaa Fashion',initials:'NF',price:'₹13,499',delivery:'3 days',distance:'5.8 km',rating:'4.2',pn:13499,dn:3},
+  {name:'Tata CLiQ',initials:'TC',price:'₹14,999',delivery:'5 days',distance:'Online',rating:'4.0',pn:14999,dn:5}
+];
+
+const dummyAI = {
+  top:'The vibrant Lehenga Choli drapes elegantly with rich crimson fabric and intricate gold zari embroidery that catches every ray of light — perfectly complementing your silhouette. ✨',
+  footwear:'The designer heels add a regal lift with delicate metallic straps glimmering against the lehenga hem. The stiletto creates a poised, elongated stance that pairs beautifully. 👠',
+  accessories:'The traditional jewelry set frames your face magnificently — layered kundan necklaces cascade over the neckline, while jhumkas sway with every graceful movement. Pure royalty. 💎',
+  bottom:'The flowing silk skirt fans out in a perfect circle, its subtle shimmer catching light with every step. A voluminous, princess-like silhouette that moves like liquid gold. 👗'
+};
+
+// ─── Static image sources ──────────────────────────────────────────
+// To use local images, set these paths (relative to this HTML file):
+//   BEFORE_IMG = 'before.jpg'   ← person without outfit
+//   AFTER_IMG  = 'after.jpg'    ← person with outfit on
+// Leave empty ('') to show the placeholder UI.
+const BEFORE_IMG = 'before.jpeg';   // e.g. 'before.jpg'
+const AFTER_IMG  = 'after.jpeg';   // e.g. 'after.jpg'
+// ──────────────────────────────────────────────────────────────────
+
+let curScreen = 'home';
+let history = [];
+let swapSt = {};
+let mode = 'before';
+let selComp = tryOnComps[0];
+
+// ─── Navigation ───────────────────────────────────────────────────
+function navigate(s) { history.push(curScreen); show(s); }
+function goBack() { show(history.pop() || 'home'); }
+function show(s) {
+  document.querySelectorAll('.screen').forEach(x => x.classList.remove('active'));
+  document.getElementById('screen-' + s).classList.add('active');
+  curScreen = s;
+  if (s === 'local') renderRetailers('price');
+  if (s === 'tryon') initTryOn();
+}
+
+// ─── Home ─────────────────────────────────────────────────────────
+function renderMasonry() {
+  document.getElementById('mg').innerHTML = pins.map(p =>
+    `<div class="pc" onclick="navigate('detail')">
+      <img src="${p.img}" alt="${p.title}" style="height:${p.h}px;object-fit:cover">
+      <button class="svb" onclick="event.stopPropagation()">Save</button>
+      <div class="po"><div class="pot">${p.title}</div><div class="pop">${p.price}</div></div>
+      <div class="pi"><div class="pit">${p.title}</div><div class="pip">${p.price}</div></div>
+    </div>`
+  ).join('');
+}
+
+function setChip(el) {
+  document.querySelectorAll('.chip').forEach(c => c.className = 'chip inactive');
+  el.className = 'chip active';
+}
+
+// ─── Detail ───────────────────────────────────────────────────────
+function toggleHeart() {
+  const b = document.getElementById('hrtbtn');
+  const svg = b.querySelector('svg');
+  const saved = b.dataset.saved === 'true';
+  b.dataset.saved = !saved;
+  svg.setAttribute('fill', saved ? 'none' : '#E60023');
+  svg.setAttribute('stroke', saved ? 'currentColor' : '#E60023');
+}
+
+// ─── Outfit ───────────────────────────────────────────────────────
+function renderOutfit() {
+  document.getElementById('oc').innerHTML = outfitItems.map(i => {
+    const swapped = !!swapSt[i.id];
+    const cur = swapped ? i.alt : i;
+    return `<div class="oc">
+      <img class="oci" src="${cur.img}" alt="${cur.name}">
+      <div class="ocb">
+        <div>
+          <div class="ocat">${i.category}</div>
+          <div class="on">${cur.name}</div>
+          <div class="op">₹${cur.price.toLocaleString()}</div>
+        </div>
+        <button class="swb" onclick="swapItem('${i.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Swap
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+  const total = outfitItems.reduce((s, i) => s + (swapSt[i.id] ? i.alt.price : i.price), 0);
+  document.getElementById('ot').textContent = '₹' + total.toLocaleString();
+}
+
+function swapItem(id) { swapSt[id] = !swapSt[id]; renderOutfit(); }
+
+// ─── Virtual Try-On ───────────────────────────────────────────────
+function initTryOn() {
+  // Set image sources from constants
+  const imgBefore = document.getElementById('img-before');
+  const imgAfter  = document.getElementById('img-after');
+  const phDefault = document.getElementById('ph-default');
+  const phBefore  = document.getElementById('ph-before');
+  const phAfter   = document.getElementById('ph-after');
+
+  // Apply configured sources
+  if (BEFORE_IMG) { imgBefore.src = BEFORE_IMG; }
+  if (AFTER_IMG)  { imgAfter.src  = AFTER_IMG;  }
+
+  // Hide dev note if both images are configured
+  if (BEFORE_IMG && AFTER_IMG) {
+    document.getElementById('ph-devnote').style.display = 'none';
+  }
+
+  // Default state: hide all, then show correct view
+  imgBefore.style.display = 'none';
+  imgAfter.style.display  = 'none';
+  phBefore.style.display  = 'none';
+  phAfter.style.display   = 'none';
+  phDefault.style.display = 'none';
+
+  setMode(mode);
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('btnafter').className  = 'tb ' + (m === 'after'  ? 'active' : 'inactive');
+  document.getElementById('btnbefore').className = 'tb ' + (m === 'before' ? 'active' : 'inactive');
+
+  const imgBefore = document.getElementById('img-before');
+  const imgAfter  = document.getElementById('img-after');
+  const phDefault = document.getElementById('ph-default');
+  const phBefore  = document.getElementById('ph-before');
+  const phAfter   = document.getElementById('ph-after');
+  const aov       = document.getElementById('aov');
+  const badge     = document.getElementById('aibadge');
+
+  // Hide everything first
+  imgBefore.style.display = 'none';
+  imgAfter.style.display  = 'none';
+  phDefault.style.display = 'none';
+  phBefore.style.display  = 'none';
+  phAfter.style.display   = 'none';
+  aov.style.display       = 'none';
+  badge.style.display     = 'none';
+
+  if (m === 'before') {
+    if (BEFORE_IMG) {
+      imgBefore.style.display = 'block';
+    } else {
+      phBefore.style.display = 'flex';
+    }
+  } else {
+    // After mode
+    if (AFTER_IMG) {
+      imgAfter.style.display = 'block';
+      badge.style.display = 'flex';
+      aov.style.display = 'block';
+      // Show AI caption
+      const tx = document.getElementById('artxt');
+      const ld = document.getElementById('aload');
+      if (!tx.textContent) {
+        ld.style.display = 'flex';
+        setTimeout(() => {
+          ld.style.display = 'none';
+          typewrite(tx, dummyAI[selComp.id]);
+        }, 1200);
+      }
+    } else {
+      phAfter.style.display = 'flex';
+    }
+
+    // No images at all → show combined placeholder
+    if (!BEFORE_IMG && !AFTER_IMG) {
+      phAfter.style.display  = 'none';
+      phDefault.style.display = 'flex';
+    }
+  }
+}
+
+function renderThumbs() {
+  document.getElementById('tg').innerHTML = tryOnComps.map(c =>
+    `<div class="th ${c.id === selComp.id ? 'selected' : ''}" onclick="selectComp('${c.id}')">
+      <img src="${c.img}" alt="${c.name}">
+      ${c.id === selComp.id ? '<div class="tc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
+    </div>`
+  ).join('');
+}
+
+function selectComp(id) {
+  selComp = tryOnComps.find(c => c.id === id);
+  renderThumbs();
+  document.getElementById('selinfo').innerHTML =
+    `<div class="sin">${selComp.name}</div><div class="sic">${selComp.category}</div>`;
+  // Reset AI caption so it re-animates for this component
+  document.getElementById('artxt').textContent = '';
+  if (mode === 'after' && AFTER_IMG) setMode('after');
+}
+
+function handleUpload(e) {
+  // Upload button kept for future use / override; reads the file and shows it
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    const img = document.getElementById('img-after');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('ph-after').style.display = 'none';
+    document.getElementById('ph-default').style.display = 'none';
+    document.getElementById('aibadge').style.display = 'flex';
+    document.getElementById('aov').style.display = 'block';
+    const tx = document.getElementById('artxt');
+    tx.textContent = '';
+    const ld = document.getElementById('aload');
+    ld.style.display = 'flex';
+    setTimeout(() => { ld.style.display = 'none'; typewrite(tx, dummyAI[selComp.id]); }, 1800);
+    // Enable download
+    const dl = document.getElementById('dlbtn');
+    dl.style.opacity = '1';
+    dl.style.pointerEvents = 'auto';
+    showToast('Photo uploaded! ✓');
+  };
+  r.readAsDataURL(f);
+}
+
+function dlTryOn() {
+  const img = document.getElementById('img-after');
+  if (!img.src || img.src === location.href) return;
+  const a = document.createElement('a');
+  a.href = img.src;
+  a.download = 'pinshop-tryon.jpg';
+  a.click();
+  showToast('Photo saved! ✓');
+}
+
+function typewrite(el, txt) {
+  el.textContent = '';
+  let i = 0;
+  const iv = setInterval(() => { el.textContent += txt[i++]; if (i >= txt.length) clearInterval(iv); }, 18);
+}
+
+function showToast(m) {
+  const t = document.getElementById('tst');
+  t.textContent = m;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── Local / Retailers ────────────────────────────────────────────
+function renderRetailers(by) {
+  const sorted = [...retailers].sort((a, b) => by === 'price' ? a.pn - b.pn : a.dn - b.dn);
+  document.getElementById('rl').innerHTML = sorted.map(r =>
+    `<div class="rc">
+      <div class="rt">
+        <div class="rl">${r.initials}</div>
+        <div><div class="rn">${r.name}</div><div class="rr">⭐ ${r.rating} · Indian Retailer</div></div>
+      </div>
+      <div class="rp">${r.price}</div>
+      <div class="rm">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>${r.delivery}</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${r.distance}</span>
+      </div>
+      <button class="vsb">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View on ${r.name}
+      </button>
+    </div>`
+  ).join('');
+}
+
+function setFilter(t) {
+  document.getElementById('fp').className = 'fb ' + (t === 'price' ? 'active' : 'inactive');
+  document.getElementById('fd').className = 'fb ' + (t === 'delivery' ? 'active' : 'inactive');
+  renderRetailers(t);
+}
+
+// ─── Init ─────────────────────────────────────────────────────────
+renderMasonry();
+renderOutfit();
+renderThumbs();
+</script>
+</body>
+</html>
